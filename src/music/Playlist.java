@@ -3,32 +3,31 @@ package music;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Playlist {
+class Playlist {
 
-    private LinkedList<Song> playlistSongs;
+    private LinkedList<Song> playlistOfSongs;
     private ArrayList<Album> libraryOfAlbums;
     private ArrayList<Song> libraryOfSongs;
 
     Playlist() {
-        this.playlistSongs = new LinkedList<>();
+        this.playlistOfSongs = new LinkedList<>();
         this.libraryOfAlbums = new ArrayList<>();
         this.libraryOfSongs = new ArrayList<>();
     }
 
-
-    boolean addSongToPlaylist(Song song, Album album) {
+    boolean addSongToPlaylist(Song song) {
         String songTitle = song.getTitle();
-        if (album.isSongExistInAlbum(songTitle)) {
-            playlistSongs.add(song);
+        if (libraryOfSongs.contains(song)) {
+            playlistOfSongs.add(song);
             return true;
         } else {
-            System.out.println("Song '" + songTitle + "' not found in album '" + album.getAlbumName() + "'");
+            System.out.println("Song '" + songTitle + "' not found in library!");
             return false;
         }
     }
 
     Song findSongInPlaylist(String songTitle) {
-        for (Song foundSong : playlistSongs) {
+        for (Song foundSong : playlistOfSongs) {
             if (foundSong.getTitle().equals(songTitle)) {
                 return foundSong;
             }
@@ -36,39 +35,40 @@ public class Playlist {
         return null;
     }
 
-    /*Album findAlbumByName (String albumName){
-        for (Album album: libraryOfAlbums) {
-            if (album.getAlbumName().equals(albumName)){
-                return album;
+    void setLibraryOfSongs() {
+        for (Album album : libraryOfAlbums) {
+            for (Song song : album.getAlbumSongs()) {
+                song.setAlbumName(album.getAlbumName());
+                song.setArtistName(album.getArtistName());
+                libraryOfSongs.add(song);
             }
         }
-        return null;
-    }*/
-
+    }
 
     void printSongsInPlaylist() {
         Utilities.printBorderLines();
-        System.out.println("Playlist: ");
-        Utilities.loopInList(playlistSongs);
+        if (playlistOfSongs.isEmpty()) {
+            System.out.println("Playlist is empty, please add some tracks to play.");
+        } else {
+            System.out.println("Playlist: ");
+            Utilities.loopThroughList(playlistOfSongs);
+        }
         Utilities.printBorderLines();
     }
 
     void printAllSongsInLibrary() {
-        int index = 0;
         Utilities.printBorderLines();
-        System.out.println("All songs in library: ");
-        for (Album album : libraryOfAlbums) {
-            for (Song song : album.getAlbumSongs()) {
-                System.out.println(index + 1 + ". " + song.getTitle() + " by " + album.getArtistName());
-                index++;
-            }
+        if (libraryOfSongs.isEmpty()) {
+            System.out.println("Your library is empty, please add some tracks to library.");
+        } else {
+            System.out.println("All songs in library: ");
+            Utilities.loopThroughList(libraryOfSongs);
         }
         Utilities.printBorderLines();
     }
 
-
-    LinkedList<Song> getPlaylistSongs() {
-        return playlistSongs;
+    LinkedList<Song> getPlaylistOfSongs() {
+        return playlistOfSongs;
     }
 
     ArrayList<Album> getLibraryOfAlbums() {
@@ -77,11 +77,5 @@ public class Playlist {
 
     ArrayList<Song> getLibraryOfSongs() {
         return libraryOfSongs;
-    }
-
-    void setLibraryOfSongs() {
-        for (Album album : libraryOfAlbums) {
-            libraryOfSongs.addAll(album.getAlbumSongs());
-        }
     }
 }

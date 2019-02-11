@@ -1,6 +1,5 @@
 package music;
 
-
 import java.util.List;
 
 class Utilities {
@@ -16,13 +15,11 @@ class Utilities {
         System.out.println();
     }
 
-    static void loopInList(List<Song> listOfSongs) {
-        int index = 1;
-        for (Song song : listOfSongs) {
-            System.out.println(index + ". " + song.getTitle());
+    static void loopThroughList(List<Song> libraryOfSongs) {
+        int index = 0;
+        for (Song song : libraryOfSongs) {
+            System.out.println(index + 1 + ". '" + song.getTitle() + "' by " + song.getArtistName() + " (" + song.getAlbumName() + ")");
             index++;
         }
     }
-
-
 }

@@ -20,6 +20,8 @@ class Album {
     }
 
     void addSongToAlbum(Song song) {
+        song.setAlbumName(albumName);
+        song.setArtistName(artistName);
         albumSongs.add(song);
     }
 
@@ -43,18 +45,9 @@ class Album {
         Utilities.printBorderLines();
         System.out.println("Artist [" + artistName.toUpperCase() + "]");
         System.out.println("Album [" + albumName + "]");
-        Utilities.loopInList(albumSongs);
+        Utilities.loopThroughList(albumSongs);
         Utilities.printBorderLines();
-
     }
-
-
-    /*String getNameOfAlbumBySong(String songTitle){
-        if (findSongInAlbum(songTitle)!=null){
-            return getAlbumName();
-        }
-        return null;
-    }*/
 
     String getAlbumName() {
         return albumName;
