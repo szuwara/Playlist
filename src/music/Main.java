@@ -1,9 +1,6 @@
 package music;
 
-import java.util.Collections;
-import java.util.InputMismatchException;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -12,43 +9,33 @@ public class Main {
     private static boolean isSongsAddedRandomlyOnce = false;
 
     public static void main(String[] args) {
-        Song yellow = new Song("Yellow", 180);
-        Song parachutes = new Song("Parachutes", 120);
-        Song shiver = new Song("Shiver", 160);
-        Album parachutesAlbum = new Album("Parachutes", "Coldplay");
-        Collections.addAll(parachutesAlbum.getAlbumSongs(), yellow, parachutes, shiver);
+        {
+            Song yellow = new Song("Yellow", 180);
+            Song parachutes = new Song("Parachutes", 120);
+            Song shiver = new Song("Shiver", 160);
+            Album parachutesAlbum = new Album("Parachutes", "Coldplay");
+            Collections.addAll(parachutesAlbum.getAlbumSongs(), yellow, parachutes, shiver);
 
-        Song sexOnFire = new Song("Sex on Fire", 190);
-        Song useSomebody = new Song("Use Somebody", 210);
-        Song pyro = new Song("Pyro", 240);
-        Song radioactive = new Song("Radioactive", 150);
-        Album onlyByTheNightAlbum = new Album("Only By The Night", "Kings of Leon");
-        Album comeAroundSundownAlbum = new Album("Come Around Sundown", "Kings of Leon");
-        Collections.addAll(onlyByTheNightAlbum.getAlbumSongs(), sexOnFire, useSomebody);
-        Collections.addAll(comeAroundSundownAlbum.getAlbumSongs(), pyro, radioactive);
-
-        initializeLibrary(parachutesAlbum, onlyByTheNightAlbum, comeAroundSundownAlbum);
+            Song sexOnFire = new Song("Sex on Fire", 190);
+            Song useSomebody = new Song("Use Somebody", 210);
+            Song pyro = new Song("Pyro", 240);
+            Song radioactive = new Song("Radioactive", 150);
+            Album onlyByTheNightAlbum = new Album("Only By The Night", "Kings of Leon");
+            Album comeAroundSundownAlbum = new Album("Come Around Sundown", "Kings of Leon");
+            Collections.addAll(onlyByTheNightAlbum.getAlbumSongs(), sexOnFire, useSomebody);
+            Collections.addAll(comeAroundSundownAlbum.getAlbumSongs(), pyro, radioactive);
+            initializeLibrary(parachutesAlbum, onlyByTheNightAlbum, comeAroundSundownAlbum);
+        }
 
         printPrimaryOptions();
         boolean quitProgram = false;
 
         while (!quitProgram) {
-            boolean isTimeToBackToMainMenu = false;
             try {
                 int primaryChoice = input.nextInt();
                 input.nextLine();
                 userPrimaryChoice(primaryChoice);
-
-                if (primaryChoice == 6 && !playlist.getPlaylistOfSongs().isEmpty()) {
-                    while (!isTimeToBackToMainMenu) {
-                        int secondaryChoice = input.nextInt();
-                        input.nextLine();
-                        userSecondaryChoice(secondaryChoice);
-                        if (secondaryChoice == 6) {
-                            isTimeToBackToMainMenu = true;
-                        }
-                    }
-                } else if (primaryChoice == 7) {
+                if (primaryChoice == 7) {
                     quitProgram = true;
                 }
             } catch (InputMismatchException errorException) {
@@ -57,6 +44,7 @@ public class Main {
             }
         }
     }
+
 
     private static void initializeLibrary(Album album1, Album album2, Album album3) {
         Collections.addAll(playlist.getLibraryOfAlbums(), album1, album2, album3);
@@ -103,8 +91,8 @@ public class Main {
                     System.out.println("Type number of songs You want to add to playlist (within range 1-" + playlist.getLibraryOfSongs().size() + "):");
                     int userInputNumber = input.nextInt();
                     generateRandomListOfSongs(userInputNumber);
-                    isSongsAddedRandomlyOnce = true;
                     System.out.println("Songs added randomly to playlist!");
+                    isSongsAddedRandomlyOnce = true;
                 } else {
                     System.out.println("You can use this option only once!");
                 }
@@ -113,7 +101,7 @@ public class Main {
             case 6:
                 Utilities.printBorderLines();
                 if (!playlist.getPlaylistOfSongs().isEmpty()) {
-                    printSecondaryOptions();
+                    userSecondaryChoice();
                 } else {
                     System.out.println("Options not available if playlist is empty!");
                 }
@@ -122,7 +110,6 @@ public class Main {
             case 7:
                 input.close();
                 break;
-
             default:
                 Utilities.printBorderLines();
                 System.out.println("Please type number in range 1-7");
@@ -130,30 +117,69 @@ public class Main {
         }
     }
 
-    private static void userSecondaryChoice(int choice) { //create features
-        switch (choice) {
-            case 1: //play current song
-                System.out.println("Now playing: " + playlist.getPlaylistOfSongs().getFirst().getTitle());
-                break;
-            case 2: //skip next
-                System.out.println("Next");
-                break;
-            case 3: //previous
-                System.out.println("Previous");
-                break;
-            case 4: //remove from playlist
-                System.out.println("Removing");
-                break;
-            case 5: //replay
-                System.out.println("Replay");
-                break;
-            case 6:
-                printPrimaryOptions();
-                break;
-            default:
-                Utilities.printBorderLines();
-                System.out.println("Please type number within range 1-6");
-                Utilities.printBorderLines();
+    private static void userSecondaryChoice() {
+        printSecondaryOptions();
+        ListIterator<Song> songListIterator = playlist.getPlaylistOfSongs().listIterator();
+        boolean isTimeToBack = false;
+        boolean goingForward = true;
+
+        while (!isTimeToBack) {
+            int userChoice = input.nextInt();
+            input.nextLine();
+            switch (userChoice) {
+                case 1:
+                    Utilities.printBorderLines();
+                    String songTitlePlayingNow = songListIterator.next().getTitle();
+                    System.out.println("Playlist started\n Now playing: '" + songTitlePlayingNow + "'");
+                    Utilities.printBorderLines();
+                    break;
+                case 2:
+                    Utilities.printBorderLines();
+                    if (!goingForward) {
+                        if (songListIterator.hasNext()) {
+                            songListIterator.next();
+                        }
+                        goingForward = true;
+                    }
+                    if (songListIterator.hasNext()) {
+                        String nextSongTitle = songListIterator.next().getTitle();
+                        System.out.println("Skipped to next song\n Now playing: '" + nextSongTitle + "'");
+                    } else {
+                        System.out.println("End of playlist reached");
+                        goingForward = false;
+                    }
+                    Utilities.printBorderLines();
+                    break;
+                case 3:
+                    Utilities.printBorderLines();
+                    if (goingForward) {
+                        if (songListIterator.hasPrevious()) {
+                            songListIterator.previous();
+                        }
+                        goingForward = false;
+                    }
+                    if (songListIterator.hasPrevious()) {
+                        String previousSongTitle = songListIterator.previous().getTitle();
+                        System.out.println("Skipped to previous song\n Now playing: '" + previousSongTitle + "'");
+                    } else {
+                        System.out.println("Start of playlist reached");
+                        goingForward = true;
+                    }
+                    Utilities.printBorderLines();
+                    break;
+                case 4: //replay
+                    break;
+                case 5: //remove
+                    break;
+                case 6:
+                    printPrimaryOptions();
+                    isTimeToBack = true;
+                    break;
+                default:
+                    Utilities.printBorderLines();
+                    System.out.println("Please type number within range 1-6");
+                    Utilities.printBorderLines();
+            }
         }
     }
 
@@ -171,19 +197,19 @@ public class Main {
 
     private static void printSecondaryOptions() {
         System.out.println("> CONTROLS <" +
-                "\n1 - Play" +
-                "\n2 - Skip to next song" +
-                "\n3 - Skip to previous song" +
-                "\n4 - Remove song from playlist" +
-                "\n5 - Replay song" +
+                "\n1 - Start Playlist" +
+                "\n2 - Play next song" +
+                "\n3 - Play previous song" +
+                "\n4 - Replay song" +
+                "\n5 - Remove song from playlist" +
                 "\n6 - Back to main options");
     }
 
     private static void generateRandomListOfSongs(int numberOfSongs) {
         Random random = new Random();
         while (playlist.getPlaylistOfSongs().size() != numberOfSongs) {
-            int currentNum = random.nextInt(playlist.getLibraryOfSongs().size());
-            String randomSongTitle = playlist.getLibraryOfSongs().get(currentNum).getTitle();
+            int currentRandomNumber = random.nextInt(playlist.getLibraryOfSongs().size());
+            String randomSongTitle = playlist.getLibraryOfSongs().get(currentRandomNumber).getTitle();
             if (!playlist.isSongAlreadyInPlaylist(randomSongTitle)) {
                 playlist.addSongToPlaylist(randomSongTitle);
             }
