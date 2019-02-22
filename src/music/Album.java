@@ -25,7 +25,7 @@ class Album {
         albumSongs.add(song);
     }
 
-    Song findSongInAlbum(String songTitle) {
+    private Song findSongInAlbum(String songTitle) {
         for (Song foundSong : albumSongs) {
             if (foundSong.getTitle().equals(songTitle)) {
                 return foundSong;

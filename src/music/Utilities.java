@@ -4,17 +4,6 @@ import java.util.List;
 
 class Utilities {
 
-    static void printBorderLines() {
-        System.out.println("-------------------------------");
-    }
-
-    static void printLinesAboveOrUnderText(String text) {
-        for (int i = 0; i < text.length() + 6; i++) {
-            System.out.print("=");
-        }
-        System.out.println();
-    }
-
     static void loopThroughList(List<Song> libraryOfSongs) {
         int index = 0;
         for (Song song : libraryOfSongs) {
@@ -23,7 +12,21 @@ class Utilities {
         }
     }
 
-    static String capitilizeFirstLetter(String input) {
-        return input.substring(0, 1).toUpperCase() + input.substring(1);
+    static void printBorderLines() {
+        System.out.println("-------------------------------");
+    }
+
+    static void printWelcomeBanner() {
+        String welcomeText = "=>> PLAYLIST APPLICATION <<=";
+        printLinesAboveOrUnderText(welcomeText);
+        System.out.println(welcomeText);
+        printLinesAboveOrUnderText(welcomeText);
+    }
+
+    private static void printLinesAboveOrUnderText(String text) {
+        for (int i = 0; i < text.length(); i++) {
+            System.out.print("=");
+        }
+        System.out.println();
     }
 }
