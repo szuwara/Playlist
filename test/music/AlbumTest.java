@@ -2,14 +2,22 @@ package music;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertSame;
 
+@RunWith(Parameterized.class)
 public class AlbumTest {
     private Song newSong;
+    private Song newSong2;
+    private Song newSong3;
+    private Song newSong4;
     private List<Song> albumOfSongs;
 
 
@@ -43,5 +51,14 @@ public class AlbumTest {
             assertSame(newSong, song);
         }
         System.out.println("method test 'isSongExistInAlbum' completed\n***********************************");
+    }
+
+    @Parameterized.Parameters
+    public static Collection testConditions() {
+        return Arrays.asList(new Object[][]{
+                {},
+                {},
+                {},
+        });
     }
 }

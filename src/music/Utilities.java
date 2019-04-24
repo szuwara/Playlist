@@ -7,7 +7,9 @@ class Utilities {
     static void loopThroughList(List<Song> libraryOfSongs) {
         int index = 0;
         for (Song song : libraryOfSongs) {
-            System.out.println(index + 1 + ". '" + song.getTitle() + "' by " + song.getArtistName() + " (" + song.getAlbumName() + ")");
+            System.out.println(index + 1 + ". '" + song.getTitle() + "' by " +
+                    //song.getArtistName() +
+                    " (" + song.getAlbumName() + ")");
             index++;
         }
     }

@@ -1,5 +1,9 @@
 package music;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 public class Main {
@@ -11,8 +15,18 @@ public class Main {
     private static boolean forbiddenAddingSongsManually = false;
 
     public static void main(String[] args) {
+
+        try {
+
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\kozlo\\JAVA Projects\\Playlist\\resources\\music.db");
+            Statement statement = connection.createStatement();
+            statement.execute("CREATE TABLE IF NOT EXISTS test (_id INTEGER PRIMARY KEY, name TEXT)");
+
+        } catch (SQLException e) {
+            System.out.println("Something went wrong " + e.getMessage());
+        }
         {
-            Song yellow = new Song("Yellow", 180);
+            /*Song yellow = new Song("Yellow", 180);
             Song parachutes = new Song("Parachutes", 120);
             Song shiver = new Song("Shiver", 160);
             Album parachutesAlbum = new Album("Parachutes", "Coldplay");
@@ -26,7 +40,7 @@ public class Main {
             Album comeAroundSundownAlbum = new Album("Come Around Sundown", "Kings of Leon");
             Collections.addAll(onlyByTheNightAlbum.getAlbumSongs(), sexOnFire, useSomebody);
             Collections.addAll(comeAroundSundownAlbum.getAlbumSongs(), pyro, radioactive);
-            initializeLibrary(parachutesAlbum, onlyByTheNightAlbum, comeAroundSundownAlbum);
+            initializeLibrary(parachutesAlbum, onlyByTheNightAlbum, comeAroundSundownAlbum);*/
         }
 
         mainOptions();

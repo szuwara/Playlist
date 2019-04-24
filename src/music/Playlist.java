@@ -50,7 +50,7 @@ class Playlist {
         for (Album album : libraryOfAlbums) {
             for (Song song : album.getAlbumSongs()) {
                 song.setAlbumName(album.getAlbumName());
-                song.setArtistName(album.getArtistName());
+                //song.setArtistName(album.getArtistName());
                 libraryOfSongs.add(song);
             }
         }
