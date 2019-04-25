@@ -1,9 +1,5 @@
 package music;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.*;
 
 public class Main {
@@ -16,15 +12,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        try {
-
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\kozlo\\JAVA Projects\\Playlist\\resources\\music.db");
-            Statement statement = connection.createStatement();
-            statement.execute("CREATE TABLE IF NOT EXISTS test (_id INTEGER PRIMARY KEY, name TEXT)");
-
-        } catch (SQLException e) {
-            System.out.println("Something went wrong " + e.getMessage());
-        }
         {
             /*Song yellow = new Song("Yellow", 180);
             Song parachutes = new Song("Parachutes", 120);

@@ -23,7 +23,7 @@ public class AlbumTest {
 
     @Before
     public void setUp() {
-        newSong = new Song("Random Title", 200);
+        newSong = new Song();
         albumOfSongs = new ArrayList<>();
         System.out.println("Set up method executed");
     }

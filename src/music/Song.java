@@ -7,19 +7,10 @@ class Song {
     private int track;
     private String title;
     private int albumID;
-    //private String artistName;
-    private String albumName;
 
     public Song() {
     }
 
-    public Song(int id, int track, String title) {
-        this.id = id;
-        this.track = track;
-        this.title = title;
-        this.albumName = getAlbumName();
-        //this.artistName = getArtistName();
-    }
 
     public int getId() {
         return id;
@@ -53,19 +44,4 @@ class Song {
         this.albumID = albumID;
     }
 
-    /*String getArtistName() {
-        return artistName;
-    }*/
-
-    String getAlbumName() {
-        return albumName;
-    }
-
-    /*void setArtistName(String artistName) {
-        this.artistName = artistName;
-    }*/
-
-    void setAlbumName(String albumName) {
-        this.albumName = albumName;
-    }
 }

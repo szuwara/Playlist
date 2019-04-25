@@ -1,6 +1,5 @@
 package music;
 
-import java.sql.*;
 import java.util.ArrayList;
 
 class Album {
@@ -8,27 +7,8 @@ class Album {
     private String albumName;
     private String artistName;
     private ArrayList<Song> albumSongs;
-    public static final String SONGS_TABLE = "songs";
 
-    void setSongsFromDB() {
-        try {
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\kozlo\\JAVA Projects\\Playlist\\resources\\music.db");
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM " + SONGS_TABLE);
 
-            while (resultSet.next()) {
-                Song song = new Song();
-                song.setId(resultSet.getInt("_id"));
-                song.setTrack(resultSet.getInt("track"));
-                song.setTitle(resultSet.getString("title"));
-                song.setAlbumID(resultSet.getInt("album"));
-                albumSongs.add(song);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error " + e.getMessage());
-        }
-
-    }
 
     Album(String albumName, String artistName) {
         this.albumName = albumName;
