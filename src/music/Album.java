@@ -23,7 +23,7 @@ class Album {
     }
 
     void addSongToAlbum(Song song) {
-        song.setAlbumName(albumName);
+        //song.setAlbumName(albumName);
         //song.setArtistName(artistName);
         albumSongs.add(song);
     }

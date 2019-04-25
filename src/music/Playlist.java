@@ -33,6 +33,7 @@ class Playlist {
             }
         } catch (SQLException e) {
             System.out.println("Error " + e.getMessage());
+            e.printStackTrace();
         }
 
         return libraryOfSongs;
@@ -75,8 +76,8 @@ class Playlist {
     void setLibraryOfSongs() {
         for (Album album : libraryOfAlbums) {
             for (Song song : album.getAlbumSongs()) {
-                song.setAlbumName(album.getAlbumName());
-                //song.setArtistName(album.getArtistName());
+                /*song.setAlbumName(album.getAlbumName());
+                //song.setArtistName(album.getArtistName());*/
                 libraryOfSongs.add(song);
             }
         }
