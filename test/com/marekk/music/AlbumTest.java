@@ -1,4 +1,4 @@
-package music;
+package com.marekk.music;
 
 import org.junit.Before;
 import org.junit.Test;

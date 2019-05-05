@@ -1,36 +1,37 @@
-package music;
+package com.marekk.music;
+
+import com.marekk.utilities.Utilities;
 
 import java.util.ArrayList;
 
-class Album {
+public class Album {
 
+    private int albumID;
     private String albumName;
-    private String artistName;
+    private int artistID;
     private ArrayList<Song> albumSongs;
 
 
-
-    Album(String albumName, String artistName) {
-        this.albumName = albumName;
-        this.artistName = artistName;
+    public Album() {
         this.albumSongs = new ArrayList<>();
     }
 
+
     void addNewSongToAlbum(String songTitle) {
         Song song = new Song();
-        song.setTitle(songTitle);
+        song.setSongTitle(songTitle);
         albumSongs.add(song);
     }
 
     void addSongToAlbum(Song song) {
         //song.setAlbumName(albumName);
-        //song.setArtistName(artistName);
+        //song.setArtistID(artistID);
         albumSongs.add(song);
     }
 
     private Song findSongInAlbum(String songTitle) {
         for (Song foundSong : albumSongs) {
-            if (foundSong.getTitle().equals(songTitle)) {
+            if (foundSong.getSongTitle().equals(songTitle)) {
                 return foundSong;
             }
         }
@@ -46,18 +47,38 @@ class Album {
 
     void printSongsInAlbum() {
         Utilities.printBorderLines();
-        System.out.println("Artist [" + artistName.toUpperCase() + "]");
+        System.out.println("Artist ID [" + getArtistID() + "]");
         System.out.println("Album [" + albumName + "]");
         Utilities.loopThroughList(albumSongs);
         Utilities.printBorderLines();
     }
 
-    String getAlbumName() {
+    public int getAlbumID() {
+        return albumID;
+    }
+
+    public void setAlbumID(int albumID) {
+        this.albumID = albumID;
+    }
+
+    public String getAlbumName() {
         return albumName;
     }
 
-    String getArtistName() {
-        return artistName;
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    public int getArtistID() {
+        return artistID;
+    }
+
+    public void setArtistID(int artistID) {
+        this.artistID = artistID;
+    }
+
+    public void setAlbumSongs(ArrayList<Song> albumSongs) {
+        this.albumSongs = albumSongs;
     }
 
     ArrayList<Song> getAlbumSongs() {
