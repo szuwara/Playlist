@@ -15,6 +15,7 @@ public class Main {
 
     private static boolean forbiddenAddingSongsRandomly = false;
     private static boolean forbiddenAddingSongsManually = false;
+    private static boolean isSongsAddedRandomlyOnce = false;
 
 
     public static void main(String[] args) {
@@ -28,7 +29,6 @@ public class Main {
     public static void mainOptions() {
         Utilities.printWelcomeBanner();
         printMainOptions();
-        boolean isSongsAddedRandomlyOnce = false;
         boolean quitProgram = false;
 
         while (!quitProgram) {
@@ -253,10 +253,23 @@ public class Main {
                         break;
                     case 6:
                         Utilities.printBorderLines();
-                        playlist.printSongsInPlaylist();
+                        if (!playlist.getPlaylistOfSongs().isEmpty()) {
+                            playlist.getPlaylistOfSongs().clear();
+                            System.out.println("Playlist emptied!");
+                            isSongsAddedRandomlyOnce = false;
+                            printPlaylistOptions();
+                        } else {
+                            System.out.println("Playlist is already empty!");
+                            printPlaylistOptions();
+                        }
                         Utilities.printBorderLines();
                         break;
                     case 7:
+                        Utilities.printBorderLines();
+                        playlist.printSongsInPlaylist();
+                        Utilities.printBorderLines();
+                        break;
+                    case 8:
                         printMainOptions();
                         isTimeToBack = true;
                         break;
@@ -293,8 +306,9 @@ public class Main {
                 "\n3 - > Play previous song" +
                 "\n4 - > Replay song" +
                 "\n5 - > Remove current song from playlist" +
-                "\n6 - > Show playlist" +
-                "\n7 - >> Back to main options");
+                "\n6 - > Remove all songs from playlist" +
+                "\n7 - > Show playlist" +
+                "\n8 - >> Back to main options");
         Utilities.printBorderLines();
     }
 
@@ -310,3 +324,5 @@ public class Main {
     }
 
 }
+
+//TODO small issue with switch case 6 in playlistOptions (change logic (boolean random/specific song - "You cannot add manually songs while You added them randomly!"))
