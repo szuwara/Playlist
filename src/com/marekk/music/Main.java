@@ -30,6 +30,7 @@ public class Main {
         Utilities.printWelcomeBanner();
         printMainOptions();
         boolean quitProgram = false;
+        int numberOfSongsInPlaylist = playlist.getLibraryOfSongs().size();
 
         while (!quitProgram) {
             try {
@@ -60,8 +61,12 @@ public class Main {
                         if (forbiddenAddingSongsManually) {
                             System.out.println("You cannot add manually songs while You added them randomly!");
                         } else {
-                            System.out.println("Type below position of a song from library:");
+                            System.out.format("Type below position of a song from library (1-%d):\n", numberOfSongsInPlaylist);
                             int userSongNumber = (input.nextInt()) - 1;
+                            while (userSongNumber < 0 || userSongNumber > numberOfSongsInPlaylist) {
+                                System.out.format("Chosen song is out of library range! Please type number within range 1-%d\n", numberOfSongsInPlaylist);
+                                userSongNumber = (input.nextInt()) - 1;
+                            }
                             String userSongTitle = playlist.getLibraryOfSongs().get(userSongNumber).getSongTitle();
                             if (!playlist.isSongAlreadyInPlaylist(userSongTitle)) {
                                 if (playlist.addSongToPlaylist(userSongTitle)) {
@@ -85,12 +90,19 @@ public class Main {
                             System.out.println("You cannot add randomly songs while You added at least one song manually!");
                         } else {
                             if (!isSongsAddedRandomlyOnce) {
-                                System.out.println("Type number of songs You want to add to playlist (within range 1-" + playlist.getLibraryOfSongs().size() + "):");
+                                System.out.format("Type number of songs You want to add to playlist (within range 1-%d):\n", numberOfSongsInPlaylist);
                                 int userInputNumber = input.nextInt();
+                                while (userInputNumber < 1 || userInputNumber > numberOfSongsInPlaylist) {
+                                    System.out.format("Chosen amount of songs is out of library range! Please type number within range 1-%d\n", numberOfSongsInPlaylist);
+                                    userInputNumber = input.nextInt();
+                                }
+
+                                input.nextLine();
                                 generateRandomListOfSongs(userInputNumber);
                                 System.out.println("Songs added randomly to playlist.");
                                 isSongsAddedRandomlyOnce = true;
                                 forbiddenAddingSongsManually = true;
+
                             } else {
                                 System.out.println("You can use this option only once!");
                             }
@@ -253,16 +265,21 @@ public class Main {
                         break;
                     case 6:
                         Utilities.printBorderLines();
+
                         if (!playlist.getPlaylistOfSongs().isEmpty()) {
                             playlist.getPlaylistOfSongs().clear();
                             System.out.println("Playlist emptied!");
                             isSongsAddedRandomlyOnce = false;
-                            printPlaylistOptions();
+                            forbiddenAddingSongsManually = false;
+                            forbiddenAddingSongsRandomly = false;
+                            isTimeToBack = true;
                         } else {
                             System.out.println("Playlist is already empty!");
                             printPlaylistOptions();
                         }
+
                         Utilities.printBorderLines();
+                        printMainOptions();
                         break;
                     case 7:
                         Utilities.printBorderLines();
@@ -325,4 +342,4 @@ public class Main {
 
 }
 
-//TODO small issue with switch case 6 in playlistOptions (change logic (boolean random/specific song - "You cannot add manually songs while You added them randomly!"))
+//TODO optimize generateRandomListOfSong method - too slow.
