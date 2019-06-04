@@ -36,7 +36,7 @@ public class Main {
             try {
                 int userChoice = input.nextInt();
                 input.nextLine();
-                if (userChoice == 7) {
+                if (userChoice == 8) {
                     quitProgram = true;
                     DataSource.closeConnection();
                 }
@@ -57,71 +57,23 @@ public class Main {
                         break;
                     case 4:
                         Utilities.printBorderLines();
-
-                        if (forbiddenAddingSongsManually) {
-                            System.out.println("You cannot add manually songs while You added them randomly!");
-                        } else {
-                            System.out.format("Type below position of a song from library (1-%d):\n", numberOfSongsInPlaylist);
-                            int userSongNumber = (input.nextInt()) - 1;
-                            while (userSongNumber < 0 || userSongNumber > numberOfSongsInPlaylist) {
-                                System.out.format("Chosen song is out of library range! Please type number within range 1-%d\n", numberOfSongsInPlaylist);
-                                userSongNumber = (input.nextInt()) - 1;
-                            }
-                            String userSongTitle = playlist.getLibraryOfSongs().get(userSongNumber).getSongTitle();
-                            if (!playlist.isSongAlreadyInPlaylist(userSongTitle)) {
-                                if (playlist.addSongToPlaylist(userSongTitle)) {
-                                    System.out.println("Song '" + userSongTitle + "' successfully added to current playlist");
-                                    forbiddenAddingSongsRandomly = true;
-                                } else {
-                                    System.out.println("Song '" + userSongTitle + "' not found in library!" +
-                                            "\nRequest aborted.");
-                                }
-                            } else {
-                                System.out.println("Song '" + userSongTitle + "' is already on playlist!");
-                            }
-                        }
-
+                        addSongToPlaylistManually(numberOfSongsInPlaylist);
                         Utilities.printBorderLines();
                         break;
                     case 5:
                         Utilities.printBorderLines();
-
-                        if (forbiddenAddingSongsRandomly) {
-                            System.out.println("You cannot add randomly songs while You added at least one song manually!");
-                        } else {
-                            if (!isSongsAddedRandomlyOnce) {
-                                System.out.format("Type number of songs You want to add to playlist (within range 1-%d):\n", numberOfSongsInPlaylist);
-                                int userInputNumber = input.nextInt();
-                                while (userInputNumber < 1 || userInputNumber > numberOfSongsInPlaylist) {
-                                    System.out.format("Chosen amount of songs is out of library range! Please type number within range 1-%d\n", numberOfSongsInPlaylist);
-                                    userInputNumber = input.nextInt();
-                                }
-
-                                input.nextLine();
-                                generateRandomListOfSongs(userInputNumber);
-                                System.out.println("Songs added randomly to playlist.");
-                                isSongsAddedRandomlyOnce = true;
-                                forbiddenAddingSongsManually = true;
-
-                            } else {
-                                System.out.println("You can use this option only once!");
-                            }
-                        }
-
+                        addSongToPlaylistRandomly(numberOfSongsInPlaylist);
                         Utilities.printBorderLines();
                         break;
                     case 6:
+                        // add own song to library, ask user whether he want to add it to playlist at once or not
+                        // availability to add song to database
+                    case 7:
                         Utilities.printBorderLines();
-
-                        if (!playlist.getPlaylistOfSongs().isEmpty()) {
-                            playlistOptions();
-                        } else {
-                            System.out.println("Options not available if playlist is empty!");
-                        }
-
+                        redirectToPlaylistController();
                         Utilities.printBorderLines();
                         break;
-                    case 7:
+                    case 8:
                         input.close();
                         break;
                     default:
@@ -132,6 +84,63 @@ public class Main {
             } catch (InputMismatchException errorException) {
                 System.out.println("ERROR! ONLY INTEGERS ALLOWED!!!");
                 input.next();
+            }
+        }
+    }
+
+    private static void redirectToPlaylistController() {
+        if (!playlist.getPlaylistOfSongs().isEmpty()) {
+            playlistOptions();
+        } else {
+            System.out.println("Options not available if playlist is empty!");
+        }
+    }
+
+    private static void addSongToPlaylistRandomly(int numberOfSongsInPlaylist) {
+        if (forbiddenAddingSongsRandomly) {
+            System.out.println("You cannot add randomly songs while You added at least one song manually!");
+        } else {
+            if (!isSongsAddedRandomlyOnce) {
+                System.out.format("Type number of songs You want to add to playlist (within range 1-%d):\n", numberOfSongsInPlaylist);
+                int userInputNumber = input.nextInt();
+                while (userInputNumber < 1 || userInputNumber > numberOfSongsInPlaylist) {
+                    System.out.format("Chosen amount of songs is out of library range! Please type number within range 1-%d\n", numberOfSongsInPlaylist);
+                    userInputNumber = input.nextInt();
+                }
+
+                input.nextLine();
+                generateRandomListOfSongs(userInputNumber);
+                System.out.println("Songs added randomly to playlist.");
+                isSongsAddedRandomlyOnce = true;
+                forbiddenAddingSongsManually = true;
+
+            } else {
+                System.out.println("You can use this option only once!");
+            }
+        }
+    }
+
+    private static void addSongToPlaylistManually(int numberOfSongsInPlaylist) {
+        if (forbiddenAddingSongsManually) {
+            System.out.println("You cannot add manually songs while You added them randomly!");
+        } else {
+            System.out.format("Type below position of a song from library (1-%d):\n", numberOfSongsInPlaylist);
+            int userSongNumber = (input.nextInt()) - 1;
+            while (userSongNumber < 0 || userSongNumber > numberOfSongsInPlaylist) {
+                System.out.format("Chosen song is out of library range! Please type number within range 1-%d\n", numberOfSongsInPlaylist);
+                userSongNumber = (input.nextInt()) - 1;
+            }
+            String userSongTitle = playlist.getLibraryOfSongs().get(userSongNumber).getSongTitle();
+            if (!playlist.isSongAlreadyInPlaylist(userSongTitle)) {
+                if (playlist.addSongToPlaylist(userSongTitle)) {
+                    System.out.println("Song '" + userSongTitle + "' successfully added to current playlist");
+                    forbiddenAddingSongsRandomly = true;
+                } else {
+                    System.out.println("Song '" + userSongTitle + "' not found in library!" +
+                            "\nRequest aborted.");
+                }
+            } else {
+                System.out.println("Song '" + userSongTitle + "' is already on playlist!");
             }
         }
     }
@@ -151,38 +160,12 @@ public class Main {
                 switch (userChoice) {
                     case 1:
                         Utilities.printBorderLines();
-
-                        if (!isPlaylistStarted) {
-                            String songTitlePlayingNow = songListIterator.next().getSongTitle();
-                            System.out.println("Playlist started\n Now playing: '" + songTitlePlayingNow + "'");
-                            isPlaylistStarted = true;
-                        } else {
-                            System.out.println("Playlist already started!");
-                        }
-
+                        isPlaylistStarted = startPlaylist(songListIterator, isPlaylistStarted);
                         Utilities.printBorderLines();
                         break;
                     case 2:
                         Utilities.printBorderLines();
-
-                        if (isPlaylistStarted) {
-                            if (!goingForward) {
-                                if (songListIterator.hasNext()) {
-                                    songListIterator.next();
-                                }
-                                goingForward = true;
-                            }
-                            if (songListIterator.hasNext()) {
-                                String nextSongTitle = songListIterator.next().getSongTitle();
-                                System.out.println("Skipped to next song\n Now playing: '" + nextSongTitle + "'");
-                            } else {
-                                System.out.println("End of playlist reached.");
-                                goingForward = false;
-                            }
-                        } else {
-                            System.out.println("Option not available now, please press '1' to start playlist.");
-                        }
-
+                        goingForward = nextSong(songListIterator, isPlaylistStarted, goingForward);
                         Utilities.printBorderLines();
                         break;
                     case 3:
@@ -302,6 +285,38 @@ public class Main {
         }
     }
 
+    private static boolean nextSong(ListIterator<Song> songListIterator, boolean isPlaylistStarted, boolean goingForward) {
+        if (isPlaylistStarted) {
+            if (!goingForward) {
+                if (songListIterator.hasNext()) {
+                    songListIterator.next();
+                }
+                goingForward = true;
+            }
+            if (songListIterator.hasNext()) {
+                String nextSongTitle = songListIterator.next().getSongTitle();
+                System.out.println("Skipped to next song\n Now playing: '" + nextSongTitle + "'");
+            } else {
+                System.out.println("End of playlist reached.");
+                goingForward = false;
+            }
+        } else {
+            System.out.println("Option not available now, please press '1' to start playlist.");
+        }
+        return goingForward;
+    }
+
+    private static boolean startPlaylist(ListIterator<Song> songListIterator, boolean isPlaylistStarted) {
+        if (!isPlaylistStarted) {
+            String songTitlePlayingNow = songListIterator.next().getSongTitle();
+            System.out.println("Playlist started\n Now playing: '" + songTitlePlayingNow + "'");
+            isPlaylistStarted = true;
+        } else {
+            System.out.println("Playlist already started!");
+        }
+        return isPlaylistStarted;
+    }
+
     private static void printMainOptions() {
         Utilities.printBorderLines();
         System.out.println("> Main Options <" +
@@ -309,9 +324,10 @@ public class Main {
                 "\n2 - > Show all songs in current playlist" +
                 "\n3 - > Show all songs in entire library" +
                 "\n4 - > Add specific song to playlist" +
-                "\n5 - > Add random songs to playlist" + //create feature
-                "\n6 - >> Redirect to options of playlist controller" +
-                "\n7 - >>> Quit Program");
+                "\n5 - > Add random songs to playlist" +
+                "\n6 - > Add song to library" +
+                "\n7 - >> Redirect to options of playlist controller" +
+                "\n8 - >>> Quit Program");
         Utilities.printBorderLines();
     }
 
